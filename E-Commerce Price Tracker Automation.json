@@ -1,0 +1,227 @@
+{
+  "name": "E-Commerce Price Tracker Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -352,
+        -80
+      ],
+      "id": "645199ca-5efc-4412-a2b8-7bb68ecd27cd",
+      "name": "Daily Price Tracker Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://fakestoreapi.com/products",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -160,
+        -80
+      ],
+      "id": "d0df023e-7153-4176-818c-6dcdf89b4f85",
+      "name": "Fetch Product Data(API)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aebdd3ed-17d3-4749-a106-700433e3cd89",
+              "name": "product_name",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "26cc5309-3661-4c3e-954b-ea6df0226524",
+              "name": "website",
+              "value": "Fakestore",
+              "type": "string"
+            },
+            {
+              "id": "b3a5a9f7-4eec-47dd-9c5c-0375acc2292f",
+              "name": "price",
+              "value": "={{ $json.price }}",
+              "type": "number"
+            },
+            {
+              "id": "01fb0344-bf09-41a8-90f9-f83c3e8f095d",
+              "name": "link",
+              "value": "https://fakestoreapi.com/products",
+              "type": "string"
+            },
+            {
+              "id": "2195ff4b-5d70-4be7-945d-0ddbcbf29f02",
+              "name": "date",
+              "value": "={{ $now }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        32,
+        -80
+      ],
+      "id": "0de54666-7edc-43c7-ac00-8177549fd536",
+      "name": "Transform Product Data"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1N0mFAfX53Ke_iW74QzJK2JFbkvX_3qsVHi3VGxekpEo",
+          "mode": "list",
+          "cachedResultName": "Price Tracker Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1N0mFAfX53Ke_iW74QzJK2JFbkvX_3qsVHi3VGxekpEo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1N0mFAfX53Ke_iW74QzJK2JFbkvX_3qsVHi3VGxekpEo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $json.date }}",
+            "Product Name": "={{ $json.product_name }}",
+            "Website": "={{ $json.website }}",
+            "Price": "={{ $json.price }}",
+            "Link": "={{ $json.link }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        272,
+        48
+      ],
+      "id": "9752f6b7-5dfa-46dd-8910-8e75dd06fd59",
+      "name": "Store Data in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FWOK8GGQ0EYdGAgr",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Daily Price Tracker Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Product Data(API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Product Data(API)": {
+      "main": [
+        [
+          {
+            "node": "Transform Product Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform Product Data": {
+      "main": [
+        [
+          {
+            "node": "Store Data in Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1cbcd42e-ed58-4587-8ef5-92cc8ef92652",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d14fc20f07d5a15690cb342ff9e3930c7119fc22d31762a5b3cc396d5abca11b"
+  },
+  "id": "U80tj7QPfgxygHoy",
+  "tags": []
+}
