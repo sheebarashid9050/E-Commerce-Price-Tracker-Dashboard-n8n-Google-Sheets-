@@ -114,5 +114,4 @@ Store Data in Google Sheets
 
 Sheeba Rashid
 
-* GitHub: https://github.com/yourusername
-* LinkedIn: https://linkedin.com/in/yourprofile
+
