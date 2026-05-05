@@ -12,11 +12,11 @@ It uses **n8n** for workflow automation, **Google Sheets** for data storage, and
 
 ### Dashboard View
 
-![Dashboard](dashboard.png)
+![Dashboard](Dashboard.png)
 
 ### n8n Workflow
 
-![Workflow](workflow.png)
+![Workflow](Workflow.png)
 
 ---
 
